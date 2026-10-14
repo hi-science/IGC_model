@@ -40,13 +40,13 @@ region['location'] = region['geometry'].centroid
 
 def network(nrw):
     
-    with open(os.path.join(os.environ["CO2_NETWORK_DATA_ROOT"], "simple_grid_Street.pkl"), "rb") as f:
-        network_street = pickle.load(f)
-        network_street = network_street.rename(columns={"Point i": "From","Point j": "To", "Distance_ij": "Distance", "Link_ij": "line"})
+    # Pickle (Standard) oder GeoParquet des Datenpakets transport-network (utils.load_grid)
+    data_root = os.environ["CO2_NETWORK_DATA_ROOT"]
+    network_street = utils.load_grid(os.path.join(data_root, os.environ.get("CO2_NETWORK_GRID_STREET", "simple_grid_Street.pkl")))
+    network_street = network_street.rename(columns={"Point i": "From","Point j": "To", "Distance_ij": "Distance", "Link_ij": "line"})
 
-    with open(os.path.join(os.environ["CO2_NETWORK_DATA_ROOT"], "simple_grid_Water.pkl"), "rb") as f:
-        network_water = pickle.load(f)
-        network_water = network_water.rename(columns={"Point i": "From","Point j": "To", "Distance_ij": "Distance", "Link_ij": "line"})  
+    network_water = utils.load_grid(os.path.join(data_root, os.environ.get("CO2_NETWORK_GRID_WATER", "simple_grid_Water.pkl")))
+    network_water = network_water.rename(columns={"Point i": "From","Point j": "To", "Distance_ij": "Distance", "Link_ij": "line"})  
 
 
     def move_source(network, loc_source, geo):
