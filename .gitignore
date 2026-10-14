@@ -12,3 +12,6 @@
 **.html
 **.gdx
 **.code-workspace
+# Ergebnisse nicht versionieren, Ordner bleibt (HiScience-Vorschlag)
+co2_network_module/Results/*
+!co2_network_module/Results/.gitkeep
