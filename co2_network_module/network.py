@@ -56,7 +56,7 @@ def network(nrw):
             for index in network.index:
                 line_i = network.loc[index, 'line']
                 start_i = Point(line_i.coords[0])
-                end_i = Point(line_i.coords[0])
+                end_i = Point(line_i.coords[-1])
                 distance_start_source = start_i.distance(loc_source)
                 distance_end_source = end_i.distance(loc_source)
                 if distance_start_source < min_distance and distance_start_source < 25:
@@ -69,7 +69,7 @@ def network(nrw):
             for index in network.index:
                 line_i = network.loc[index, 'line']
                 start_i = Point(line_i.coords[0])
-                end_i = Point(line_i.coords[0])
+                end_i = Point(line_i.coords[-1])
                 distance_start_source = start_i.distance(loc_source)
                 distance_end_source = end_i.distance(loc_source)
                 if distance_start_source < min_distance and distance_start_source < 5:
