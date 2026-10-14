@@ -5,12 +5,20 @@ from shapely import Point
 import pandas as pd
 import geopandas as gpd
 import utils
+import os
+
+# HiScience overlay: read all input data paths from CO2_NETWORK_DATA_ROOT.
+# Fail loudly if missing so we never silently load wrong data.
+_DATA_ROOT = os.environ.get("CO2_NETWORK_DATA_ROOT")
+if not _DATA_ROOT:
+    raise RuntimeError("CO2_NETWORK_DATA_ROOT environment variable is not set")
 
 ###############################################################################
 ###                     Scenario settings                                   ###
 ###############################################################################
 
-scenario_name = 'Base only'
+# HiScience overlay: scenario set selectable per run (default = upstream value).
+scenario_name = os.environ.get('CO2_NETWORK_SCENARIO_SET', 'Base only')
 #scenario = 'Base only'
 scenarios = {"Base, S1, and E": ["Base", "S1", "E"],
              "Base and S1": ["Base", "S1"],
@@ -69,8 +77,8 @@ Grids2 = ['', '_P', '_T', '_W']
 ###                              NUTS                                       ###
 ###############################################################################
 
-nuts1 = utils.load_geodataframe('C:\\Landwehr\\GIT\\Data\\NUTS_RG_01M_2024_3035.gpkg', 'geometry', 'gpd', '', crs)
-nrw_nuts_gdf = utils.load_geodataframe('C:\\Landwehr\\GIT\\Data\\NUTS3_NRW_2024_4326.gpkg', 'geometry', 'gpd', '', crs)
+nuts1 = utils.load_geodataframe(os.path.join(_DATA_ROOT, 'NUTS_RG_01M_2024_3035.gpkg'), 'geometry', 'gpd', '', crs)
+nrw_nuts_gdf = utils.load_geodataframe(os.path.join(_DATA_ROOT, 'NUTS3_NRW_2024_4326.gpkg'), 'geometry', 'gpd', '', crs)
 nrw_nuts_gdf = nrw_nuts_gdf.drop(columns=['LEVL_CODE', 'CNTR_CODE', 'NAME_LATN', 'NUTS_NAME', 'MOUNT_TYPE', 'URBN_TYPE', 'COAST_TYPE'])
 nrw_nuts_gdf = nrw_nuts_gdf.set_index('NUTS_ID')
 nrw_nuts_gdf['location'] = nrw_nuts_gdf['geometry'].centroid
@@ -79,7 +87,7 @@ nrw_nuts_gdf['location'] = nrw_nuts_gdf['geometry'].centroid
 ###############################################################################
 ###                          CO2 demand                                     ###
 ###############################################################################
-demand_gdf = utils.load_geodataframe('C:\\Landwehr\\GIT\\Data\\CO2_demand.xlsx', 'geometry', 'xlsx', crs, crs)
+demand_gdf = utils.load_geodataframe(os.path.join(_DATA_ROOT, 'CO2_demand.xlsx'), 'geometry', 'xlsx', crs, crs)
 demand_gdf = demand_gdf.dropna()
 demand_gdf = demand_gdf.rename(columns={"geometry": "location"})
 demand_gdf = demand_gdf.rename(columns={"Unnamed: 0": "name"})
@@ -92,7 +100,7 @@ demand_gdf = gpd.GeoDataFrame(demand_gdf, geometry='location')
 ###                          Emissions                                      ###
 ###############################################################################
 
-emissions_gdf = utils.load_geodataframe('C:\\Landwehr\\GIT\\Data\\emissions.xlsx', 'geometry', 'xlsx', 4326, crs)
+emissions_gdf = utils.load_geodataframe(os.path.join(_DATA_ROOT, 'emissions.xlsx'), 'geometry', 'xlsx', 4326, crs)
 emissions_gdf = emissions_gdf[emissions_gdf['Scenario'].isin(scenario)]
 emissions_gdf = emissions_gdf.drop(columns=['geometry','operator_name','Scenario', 'geometry'])
 emissions_gdf = emissions_gdf.reset_index()
@@ -185,7 +193,7 @@ storages_gdf = gpd.GeoDataFrame(storages_gdf, geometry='location')
 ###                            Ports                                        ###
 ###############################################################################
 
-ports_gdf = utils.load_geodataframe('C:\\Landwehr\\GIT\\Data\\binnenschiff_haefen.gpkg', 'geometry', 'gpd', '', crs)
+ports_gdf = utils.load_geodataframe(os.path.join(_DATA_ROOT, 'binnenschiff_haefen.gpkg'), 'geometry', 'gpd', '', crs)
 ports_gdf['Keep'] = True
 
 while 1:

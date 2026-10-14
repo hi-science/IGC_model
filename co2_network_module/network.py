@@ -12,12 +12,14 @@ nuts1 = data.nuts1
 scenario = data.scenario_name
 import utils
 import numpy as np
+import os
 
     
 ppln_code = '_P'
 trck_code = '_T'
 wtr_code = '_W'
-demand = True
+# HiScience overlay: CO2 demand (ethylene sinks) switchable, shared with main.py.
+demand = os.environ.get('CO2_NETWORK_DEMAND', '1') == '1'
 
 nrw = pypsa.Network()
 nrw.investment_periods = data.years
@@ -38,11 +40,11 @@ region['location'] = region['geometry'].centroid
 
 def network(nrw):
     
-    with open("C:\\Landwehr\\GIT\\Data\\simple_grid_Street.pkl", "rb") as f:
+    with open(os.path.join(os.environ["CO2_NETWORK_DATA_ROOT"], "simple_grid_Street.pkl"), "rb") as f:
         network_street = pickle.load(f)
         network_street = network_street.rename(columns={"Point i": "From","Point j": "To", "Distance_ij": "Distance", "Link_ij": "line"})
 
-    with open("C:\\Landwehr\\GIT\\Data\\simple_grid_Water.pkl", "rb") as f:
+    with open(os.path.join(os.environ["CO2_NETWORK_DATA_ROOT"], "simple_grid_Water.pkl"), "rb") as f:
         network_water = pickle.load(f)
         network_water = network_water.rename(columns={"Point i": "From","Point j": "To", "Distance_ij": "Distance", "Link_ij": "line"})  
 
@@ -347,14 +349,16 @@ def network(nrw):
             network_water.loc[new, 'Distance'] = new_connection.length / 1e3
             network_water.loc[new, 'Split'] = False 
     
-    with open(f'C:\Landwehr\GIT\Data\\network_street_{scenario}.pkl', "wb") as f:
+    # HiScience overlay: intermediate pickles stay in the sandbox (Results/),
+    # never written into the (read-only) data root.
+    with open(f'Results/network_street_{scenario}.pkl', "wb") as f:
         pickle.dump(network_street, f)
-    with open(f'C:\Landwehr\GIT\Data\\network_water_{scenario}.pkl', "wb") as f:
+    with open(f'Results/network_water_{scenario}.pkl', "wb") as f:
         pickle.dump(network_water, f)  
     
-    with open(f'C:\Landwehr\GIT\Data\\network_street_{scenario}.pkl', "rb") as f:
+    with open(f'Results/network_street_{scenario}.pkl', "rb") as f:
         network_street = pickle.load(f)
-    with open(f'C:\Landwehr\GIT\Data\\network_water_{scenario}.pkl', "rb") as f:
+    with open(f'Results/network_water_{scenario}.pkl', "rb") as f:
         network_water = pickle.load(f)
     
     ###############################################################################
