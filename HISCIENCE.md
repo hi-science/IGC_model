@@ -53,6 +53,13 @@ Adapter; ob sie in den RUB-Code soll, ist abzustimmen.
   von `Wegvakken.gpkg`?
 - **Gebiet der Quellen:** `emissions.xlsx` enthält alle 1.694 ETS-Anlagen Deutschlands; „Base
   only“ hat 101 Anlagen (31,9 Mt) außerhalb NRW. Gewollt?
+- **Gebiet der Senken:** `CO2_demand.xlsx` verlangt ab 2046 fest 15,38 Mt/a, davon 4,28 Mt
+  außerhalb NRW. Mit Quellen nur aus NRW ist „Base only“ unlösbar; HiScience schneidet die
+  Senken in seiner Variante deshalb auf NRW zu (11,09 Mt/a). Passt das für euch?
+- **Bündelung nach Betreibername:** In `emissions.xlsx` steht in `facility_name` der Betreiber
+  und in `operator_name` die Anlage (vertauscht?). `data.py` bündelt nach diesem Namen, dadurch
+  werden Anlagen desselben Betreibers über Hunderte Kilometer zusammengelegt („Base only“: 137
+  Anlagen → 69 Quellen, bei Bündelung nur nach Abstand 113). Gewollt?
 - **Einheit der CCS-Kosten:** `emissions.xlsx` 30–145 (EUR/t?), `sources_module.py` dieselben
   Werte × 1.000 (EUR/kt?).
 - **NACE 17.11** hat kein Szenario und fällt immer heraus. Gewollt?
