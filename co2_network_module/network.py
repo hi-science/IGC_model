@@ -421,7 +421,8 @@ def network(nrw):
         p_nom_i = emissions_loc_gdf.loc[i, 'ktco2_2023']   
         
         #Normal
-        if '24.1' in name_i:
+        # NACE der (gebündelten) Quelle, nicht der Name: Namen lauten nach der Bündelung Source-<i>
+        if str(emissions_loc_gdf.loc[i, 'nace_21']).startswith('24.1'):
             nrw.add('Generator', name_i, bus=bus_i, p_nom = p_nom_i, p_min_pu=0.1, marginal_cost=eps)
         else:
             nrw.add('Generator', name_i, bus=bus_i, p_nom = p_nom_i, p_min_pu=1, marginal_cost=eps)

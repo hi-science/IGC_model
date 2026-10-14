@@ -146,7 +146,7 @@ emissions_loc_gdf = emissions_loc_gdf.agg({'tco2_2023': 'sum'})
 
 emissions_gdf = emissions_gdf.set_index('facility_name')
 for facility in emissions_loc_gdf.index:
-    for category in ['location', 'CCS Cost']:#['NUTS_ID', 'location', 'CCS Cost']:
+    for category in ['location', 'CCS Cost', 'nace_21']:#['NUTS_ID', 'location', 'CCS Cost']:
         nuts_id = emissions_gdf.loc[facility, category]
         if isinstance(nuts_id, pd.Series):
             nuts_id = nuts_id.iloc[0] # Representation by first entry
