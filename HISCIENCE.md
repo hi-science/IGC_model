@@ -1,6 +1,6 @@
 # Vorschlag von HiScience (IGC.NRW) für `roman` (CO₂-Netzwerk)
 
-Stand 2026-10-14 · Ticket SR-539 (HiScience) · Ansprechpartner: HiScience, info@hiscience.de
+Stand 2026-10-15 · Tickets SR-539, SR-546 (HiScience) · Ansprechpartner: HiScience, info@hiscience.de
 
 HiScience rechnet das CO₂-Netzwerk in der IGC.NRW-App mit diesem Code (Pin `c0a36e1`). Die
 ersten Commits sind genau das, was HiScience heute als Patch anwendet, plus ein
@@ -16,6 +16,7 @@ und können Ergebnisse ändern; sie sind einzeln zu prüfen.
 | `Results/` nicht versionieren | eingecheckte `.nc` konnten alte Stände maskieren; der Ordner bleibt über `.gitkeep` (die Skripte legen ihn nicht an); einmalig `git rm -r --cached 'co2_network_module/Results/*.nc' 'co2_network_module/Results/Old_nc'` | nein |
 | `move_source` | Endpunkt ist `coords[-1]`, war `coords[0]` | möglich (Quellen und Senken auf einem Kantenende: ≤ 25 m außerhalb, ≤ 5 m innerhalb NRW); im Test ohne Wirkung |
 | Stahl-Flexibilität | `'24.1' in name_i` war nie wahr (Namen nach Bündelung `Source-<i>`); jetzt über die NACE | ja, in Szenarien mit Stahl (S1) |
+| Weiterentwicklung und Doku | `CONTRIBUTING.md` (Git-Ablauf, Versionen als Tags, Doku-Pflege, Ergebnisse in die App bringen), `co2_network_module/docs/MODEL.md` (Entwurf, bitte prüfen), `co2_network_module/CHANGELOG.md`, `docs/MODEL-vorlage.md` | nein |
 
 **Testläufe (HiGHS, Zeitlimit 600 s, 14.10.2026):** „Base only“ ergibt exakt die Kennzahlen
 von `c0a36e1` mit den Overlay-Patches (46,33 Mt, 4.197 km, 69 Quellen, Gap 17,7 %). „Base and
@@ -31,6 +32,15 @@ export CO2_NETWORK_DATA_ROOT=/pfad/zu/04_processed_data/CO2_Network
 export CO2_NETWORK_SCENARIO_SET="Base only" CO2_NETWORK_DEMAND=1
 cd co2_network_module && python network.py && python main.py
 ```
+
+## Weiterentwickeln und neue Ergebnisse
+
+Wie RUB weiterentwickelt, Versionen vergibt, die Doku pflegt und neue Ergebnisse in die App
+bringt, steht in `CONTRIBUTING.md`. Kurz: Arbeit in Branches mit Pull Request und Review,
+Releases als Tag `co2-network-vX.Y.Z` mit `CHANGELOG.md` und `docs/MODEL.md`; HiScience
+übernimmt einen Tag per Merge Request in die App, rechnet und veröffentlicht. Die App zeigt zu
+jedem Ergebnis-Set die `MODEL.md` der Version, mit der es gerechnet wurde. Cloud-Läufe rechnen
+immer mit der Version, die mit der App ausgerollt ist.
 
 ## Datenpakete statt Einzeldateien
 
