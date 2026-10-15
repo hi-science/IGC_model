@@ -1,6 +1,6 @@
 # Vorschlag von HiScience (IGC.NRW) für `main`
 
-Stand 2026-10-14 · Ticket SR-539 (HiScience) · Ansprechpartner: HiScience, info@hiscience.de
+Stand 2026-10-15 · Tickets SR-539, SR-546 (HiScience) · Ansprechpartner: HiScience, info@hiscience.de
 
 HiScience betreibt die IGC.NRW-App und rechnet dort Varianten der RUB-Modelle. Dieser Branch
 schlägt kleine Änderungen auf der Eingabe-/Ausgabe-Seite vor, damit RUB und HiScience
@@ -11,6 +11,14 @@ dieselben, versionierten Datenstände nutzen können. Jeder Commit ist einzeln �
 | Commit | Inhalt | Ändert Ergebnisse? |
 |---|---|---|
 | `.gitignore` in `plant_design_module/input` | Tippfehler `xlslx`: `technology_input.xlsx` wurde nie versioniert | nein (Datei bitte einchecken) |
+| Weiterentwicklung und Doku | `CONTRIBUTING.md` (Git-Ablauf, Versionen als Tags, Doku-Pflege, Ergebnisse in die App bringen), `docs/MODEL-vorlage.md` für `<modul>/docs/MODEL.md` | nein |
+
+## Weiterentwickeln und neue Ergebnisse
+
+Wie RUB weiterentwickelt, Versionen vergibt, die Doku pflegt und neue Ergebnisse in die App
+bringt, steht in `CONTRIBUTING.md`. Vorschlag zur Struktur: `roman` (CO₂-Netzwerk) nach `main`
+überführen, damit alle Module einen gemeinsamen, geprüften Stand haben; je Modul
+`docs/MODEL.md` und `CHANGELOG.md`, Releases als Tag `<modul>-vX.Y.Z`.
 
 ## Trading
 
